@@ -60,6 +60,7 @@ export default {
         keywords: this.query
       }
       api.MusicSearch(params).then(res => {
+         
         if (res.code === 200) {
           this.result = [...this.result, ...res.result.songs]
           this._checkMore(res.result)

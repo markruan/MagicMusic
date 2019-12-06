@@ -4,11 +4,11 @@
       <div class="head">
         <div class="avatar">
           <img
-            src="https://avatar-static.segmentfault.com/561/990/561990135-57d0e6353f822_huge256"
+            src="http://p1.music.126.net/9_Zfd3iyHW61zrLhjIuGBA==/109951164429163219.jpg?param=180y180"
             alt
           >
         </div>
-        <div class="name">hzzly</div>
+        <div class="name">Mark</div>
       </div>
       <div class="menu">
         <ul>

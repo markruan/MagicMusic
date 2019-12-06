@@ -17,13 +17,14 @@
               v-for="(item, index) in discList"
               :key="index"
               class="item"
+              v-if="index>0"
             >
               <div class="icon">
-                <img width="60" height="60" v-lazy="item.coverImgUrl">
+                <img width="60" height="60" v-lazy="item.coverImgUrl+'?param=200y200'">
               </div>
               <div class="text">
                 <h2 class="name" v-html="item.name"></h2>
-                <p class="desc" v-html="item.description"></p>
+                <p class="desc" v-html='item.description==null?"聆听音乐 感悟人生":item.description'></p>
               </div>
             </li>
           </ul>
@@ -69,13 +70,20 @@ export default {
     if (this.banners.length === 0) {
       this.$store.dispatch('getBanners')
     }
-    this._getDiscList({ limit: this.limit })
+    this._getKuLists({ limit: this.limit })
   },
   methods: {
     _getDiscList(params) {
       api.DiscLists(params).then(res => {
         if (res.code === 200) {
-          this.discList = res.playlists
+          this.discList = res.playlist
+        }
+      })
+    },
+    _getKuLists(params) {
+      api.KuLists(params).then(res => {
+        if (res.code === 200) {
+          this.discList = res.playlist
         }
       })
     },
@@ -86,7 +94,7 @@ export default {
     },
     scrollToEnd() {
       this.limit += 10
-      this._getDiscList({ limit: this.limit })
+      this._getKuLists({ limit: this.limit })
     },
     handlePlaylist(playList) {
       const bottom = playList.length > 0 ? '1.5rem' : ''
@@ -141,18 +149,21 @@ export default {
           flex: 1;
           line-height: px2rem(40px);
           overflow: hidden;
-          font-size: 14px;
+          font-size: 12px;
           .name {
             margin-bottom: px2rem(20px) x;
             color: #fff;
+
           }
           .desc {
-            color: hsla(0, 0%, 100%, 0.3);
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
+               color: hsla(0,0%,100%,.3); 
+               overflow: hidden;
+               text-overflow: ellipsis;
+               display: -webkit-box;
+               -webkit-line-clamp: 2;
+               /* autoprefixer: off */
+             -webkit-box-orient: vertical;
+              
           }
         }
       }

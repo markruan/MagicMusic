@@ -4,7 +4,7 @@ const vue = new Vue()
 
 // axios 配置
 axios.defaults.timeout = 10000;
-axios.defaults.baseURL = 'http://localhost:3000';
+axios.defaults.baseURL = 'http://iqimeng.com:3001/';
 
 //返回状态判断
 axios.interceptors.response.use((res) => {
@@ -56,6 +56,12 @@ export default {
   DiscLists(params) {
     return fetchGet('/top/playlist', params)
   },
+  /**
+   * 酷选歌单
+   */
+  KuLists(params) {
+    return fetchGet('/user/playlist?uid=1602618880', params)
+  },
 
   /**
    * 歌单详情
@@ -95,6 +101,13 @@ export default {
     return fetchGet('/search/hot')
   },
 
+  /**
+   * 专辑信息
+   */
+  SongInfo(params){
+    return fetchGet('/song/detail',params)
+
+  },
   /**
    * popularmusic列表
    */

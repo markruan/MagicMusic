@@ -9,7 +9,7 @@
     >
       <div class="normal-player" v-show="fullScreen">
         <div class="background">
-          <img width="100%" height="100%" :src="(currentSong.al && currentSong.al.picUrl) || (currentSong.artists && currentSong.artists[0].img1v1Url)">
+          <img width="100%" height="100%" :src="(currentSong.al && currentSong.al.picUrl+'?param=400y400') || (currentSong.artists && currentSong.artists[0].img1v1Url+'?param=400y400')">
         </div>
         <div class="top">
           <div class="back" @click="back">
@@ -31,7 +31,7 @@
                   ref="image"
                   :class="cdCls"
                   class="image"
-                  :src="(currentSong.al && currentSong.al.picUrl) || (currentSong.artists && currentSong.artists[0].img1v1Url)"
+                  :src="alubmPic"
                 >
               </div>
             </div>
@@ -109,7 +109,7 @@
               :class="cdCls"
               width="40"
               height="40"
-              v-lazy="(currentSong.al && currentSong.al.picUrl) || (currentSong.artists && currentSong.artists[0].img1v1Url)"
+              v-lazy="alubmPic"
             >
           </div>
         </div>
@@ -186,7 +186,8 @@ export default {
       currentShow: 'cd',
       playingLyric: '',
       isPureMusic: false,
-      pureMusicLyric: ''
+      pureMusicLyric: '',
+      alubmPic:''
     }
   },
   computed: {
@@ -506,6 +507,16 @@ export default {
       if (!newSong.id || newSong.id === oldSong.id) {
         return
       }
+      const params = {
+         
+        ids: newSong.id
+      }
+      api.SongInfo(params).then(res => {
+         
+        if (res.code === 200) {
+           this.alubmPic=res.songs[0].al.picUrl+'?param=400y400'
+        }
+      })
       if (!newSong.url) {
         const { data, code } = await api.MusicUrl(newSong.id)
         if (data && code === 200) {

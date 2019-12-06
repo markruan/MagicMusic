@@ -2,7 +2,7 @@
   <div id="app">
     <v-header @left="showSidebar">
       <i slot="left-icon" class="icon">&#xe692;</i>
-      <span slot="content">Magic Music</span>
+      <span slot="content">新感官</span>
       <router-link slot="right-icon" to="/user">
         <i class="icon">&#xe63c;</i>
       </router-link>
@@ -46,12 +46,12 @@ export default {
 @font-face {
   font-family: "icon";
   /* project id 277165 */
-  src: url("//at.alicdn.com/t/font_kmywdojzhchj8aor.eot");
-  src: url("//at.alicdn.com/t/font_kmywdojzhchj8aor.eot?#iefix")
+  src: url("http://at.alicdn.com/t/font_kmywdojzhchj8aor.eot");
+  src: url("http://at.alicdn.com/t/font_kmywdojzhchj8aor.eot?#iefix")
       format("embedded-opentype"),
-    url("//at.alicdn.com/t/font_kmywdojzhchj8aor.woff") format("woff"),
-    url("//at.alicdn.com/t/font_kmywdojzhchj8aor.ttf") format("truetype"),
-    url("//at.alicdn.com/t/font_kmywdojzhchj8aor.svg#iconfont") format("svg");
+    url("http://at.alicdn.com/t/font_kmywdojzhchj8aor.woff") format("woff"),
+    url("http://at.alicdn.com/t/font_kmywdojzhchj8aor.ttf") format("truetype"),
+    url("http://at.alicdn.com/t/font_kmywdojzhchj8aor.svg#iconfont") format("svg");
 }
 
 .icon {

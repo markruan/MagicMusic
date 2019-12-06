@@ -19,7 +19,10 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/recommend'
+      redirect: '/recommend',
+      meta:{
+        title:"新感官"
+      }
     },
     {
       path: '/recommend',
