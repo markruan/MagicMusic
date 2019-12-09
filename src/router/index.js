@@ -10,6 +10,7 @@ const topList = () => import(/* webpackChunkName: "topList" */ '@/pages/topList'
 const search = () => import(/* webpackChunkName: "search" */ '@/pages/search')
 const user = () => import(/* webpackChunkName: "user" */ '@/pages/user')
 const login = () => import(/* webpackChunkName: "login" */ '@/pages/login')
+const tui = () => import(/* webpackChunkName: "login" */ '@/pages/tui')
 
 Vue.use(Router)
 
@@ -59,12 +60,26 @@ export default new Router({
     {
       path: '/user',
       name: 'user',
-      component: user
+      component: user,
+       meta: {
+        requireAuth: true
+      },
     },
     {
       path: '/login',
       name: 'login',
-      component: login
+      component: login,
+      
+    },
+    {
+      path: '/tui',
+      name: 'tui',
+      component: tui, 
+       meta: {
+        requireAuth: true
+      },
     }
   ]
 })
+
+ 

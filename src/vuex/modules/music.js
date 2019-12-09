@@ -8,9 +8,14 @@ const state = {
   currentIndex: -1,
   favoriteList: [],
   playHistory: [],
+   
 }
 
 const actions = {
+  //添加喜欢列表
+  addLikeList({commit},list){
+
+  },
   // 加入播放列表
   addPlayList({ commit, state }, song) {
     let playlist = [...state.playList.slice(), song]
@@ -83,6 +88,7 @@ const getters = {
   },
   favoriteList: state => state.favoriteList,
   playHistory: state => state.playHistory,
+  likeList:state =>state.likeList
 }
 
 const mutations = {

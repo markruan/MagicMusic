@@ -16,8 +16,8 @@ export default {
   data() {
     return {
       songs: [],
-      bgImage: '',
-      title: '',
+      bgImage: this.$store.state.user.userInfo.profile.backgroundUrl,
+      title: '每日推荐',
     }
   },
   created() {
@@ -25,18 +25,15 @@ export default {
   },
   methods: {
     _getSongList() {
-      if (!this.$route.params.id) {
-        this.$router.push('/recommend')
-        return
-      }
+       
       this.$showLoading()
-      api.SongList({ id: this.$route.params.id })
+      api.RecommendSong()
         .then((res) => { 
           if (res.code === 200) {
             this.$hideLoading()
-            this.songs = res.playlist.tracks
-            this.bgImage = res.playlist.coverImgUrl
-            this.title = res.playlist.name
+            this.songs=res.data.dailySongs
+             console.log(this.songs)
+           
           }
         })
     },

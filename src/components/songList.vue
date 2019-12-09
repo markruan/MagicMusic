@@ -41,8 +41,8 @@ export default {
   },
   methods: {
     getDesc(song) {
-      const singer = song.ar && song.ar[0].name
-      const album = song.al && song.al.name
+      const singer = song.ar?song.ar&&song.ar[0].name:song.artists&&song.artists[0].name
+      const album = song.al?song.al&&song.al.name:song.album&&song.album.name
       return `${singer}·${album}`
     },
     _play(song) {

@@ -38,11 +38,13 @@ export default {
       })
     },
     _getSingerList() {
+      this.$showLoading()
       if (localStorage.singers) {
         this.singers = JSON.parse(localStorage.singers)
+        this.$hideLoading()
         return
       }
-      this.$showLoading()
+      
       api.SingerList().then((res) => {
         if (res.code === 200) {
           this.$hideLoading()

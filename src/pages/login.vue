@@ -2,12 +2,12 @@
   <div class="login">
     <div class="mask"></div>
     <div class="logo">
-      <p>MagicMusic</p>
+      <p>新感官音乐</p>
       <p>Listen to what you want to hear</p>
     </div>
     <div class="form-g">
       <div class="input-group">
-        <input type="text" placeholder="邮箱" v-model="email">
+        <input type="text" placeholder="电话" v-model="phone">
         <i class="icon">&#xe6fd;</i>
       </div>
       <div class="input-group">
@@ -36,30 +36,44 @@
 
 <script>
 import api from '@/api'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 export default {
   name: 'login',
   data() {
     return {
-      email: '',
+      phone: '',
       password: ''
     }
   },
+    computed: {
+     
+    ...mapGetters([
+      'loginStatus',
+      'userInfo',
+
+    ])
+  },
   methods: {
     _login() {
-      if (!this.email || !this.password) {
+      if (!this.phone || !this.password) {
         this.$toast('请填写完整')
         return
       }
       // TODO: 正则校验缺少
       let data = {
-        email: this.email,
+        phone: this.phone,
         password: this.password
       }
-      // api.Login(data).then(res => {
-      //   if (res.code == 200) {
-      //     this.$router.replace('/')
-      //   }
-      // })
+      api.Login(data).then(res => {
+        
+        if (res.code == 200) { 
+          
+          this.$store.dispatch('changeStatus', true);
+          this.$store.dispatch('saveUserInfo', res); 
+          
+          this.$router.replace('/')
+        }
+      })
     }
   }
 }

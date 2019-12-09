@@ -4,11 +4,11 @@
       <div class="head">
         <div class="avatar">
           <img
-            src="http://p1.music.126.net/9_Zfd3iyHW61zrLhjIuGBA==/109951164429163219.jpg?param=180y180"
+            :src="avatar"
             alt
           >
         </div>
-        <div class="name">Mark</div>
+        <div class="name">{{nickName}}</div>
       </div>
       <div class="menu">
         <ul>
@@ -62,12 +62,34 @@ import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
+        avatar:'http://p1.music.126.net/9_Zfd3iyHW61zrLhjIuGBA==/109951164429163219.jpg?param=180y180',
+        nickName:'新感官',
+
 
     }
   },
+  created() { 
+    if(this.$store.state.user.userInfo){   
+      let userinfo=this.$store.state.user.userInfo.profile 
+      this.avatar=userinfo.avatarUrl
+      this.nickName=userinfo.nickname
+     }
+  },
+  watch:{
+   loginStatus () {
+      //你需要执行的代码
+      let userinfo=this.$store.state.user.userInfo.profile 
+      this.avatar=userinfo.avatarUrl
+      this.nickName=userinfo.nickname
+    }
+
+
+  },
+  
   methods: {
-    _hidebar() {
+    _hidebar() { 
       this.$store.dispatch('setShowSidebar', false)
+      
     },
     showToast() {
       this.$toast('开发中，敬请期待...')
@@ -75,7 +97,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'showSidebar'
+      'showSidebar',
+      'loginStatus'
     ]),
   }
 }

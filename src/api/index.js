@@ -22,8 +22,11 @@ axios.interceptors.response.use((res) => {
 
 export function fetchGet(url, param) {
   return new Promise((resolve, reject) => {
-    axios.get(url, {
-        params: param
+    axios.get(url, 
+       //关键
+      {
+        params: param,
+        withCredentials: true,
       })
       .then(response => {
         resolve(response.data)
@@ -40,7 +43,7 @@ export default {
    * 用户登录
    */
   Login(params) {
-    return fetchGet('/login', params)
+    return fetchGet('/login/cellphone', params)
   },
 
   /**
@@ -109,13 +112,17 @@ export default {
 
   },
   /**
-   * popularmusic列表
+   * 推荐列表
    */
-  // PopularList() {
-  //   return fetchGet('/playlist/detail', {
-  //     id: 3778678
-  //   })
-  // },
+  TuiList() {
+    return fetchGet('/recommend/resource')
+  },
+  /**
+   * 每日推荐歌曲
+   */
+  RecommendSong(){
+    return fetchGet('/recommend/songs')
+  },
 
   /**
    * classicalmusic列表
@@ -177,5 +184,21 @@ export default {
   //     idx
   //   })
   // },
+
+  // /**
+  //  * 喜欢列表
+  //  */
+  LikeList(params){
+     
+       return  fetchGet('/playlist/detail',params)
+  },
+
+  // /**
+  //  * 用户列表
+  //  */
+  UserList(params){
+     
+       return  fetchGet('/user/playlist',params)
+  }
 
 }

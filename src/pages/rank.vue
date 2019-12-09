@@ -66,13 +66,22 @@ export default {
       })
     },
     _getRankList() {
+      
+     
       this.$showLoading()
-      api.RankList().then((res) => {
+      if (localStorage.rankList) {
+        this.rankList = JSON.parse(localStorage.rankList)
+        this.$hideLoading()
+        return
+      }
+       api.RankList().then((res) => {
         if (res.code === 200) {
           this.$hideLoading()
           this.rankList = res.list
+          localStorage.rankList = JSON.stringify(this.rankList)
         }
       })
+     
     },
   },
   watch: {

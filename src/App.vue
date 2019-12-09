@@ -7,7 +7,7 @@
         <i class="icon">&#xe63c;</i>
       </router-link>
     </v-header>
-    <v-tab></v-tab>
+     <v-tab></v-tab>
     <keep-alive>
       <router-view></router-view>
     </keep-alive>
@@ -40,7 +40,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" >
 @import "./assets/css/function";
 
 @font-face {
@@ -62,7 +62,7 @@ export default {
 }
 
 html,
-body {
+body, {
   line-height: 1;
   font-family: PingFang SC, STHeitiSC-Light, Helvetica-Light, arial, sans-serif;
   -webkit-user-select: none;

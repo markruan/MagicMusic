@@ -8,9 +8,18 @@
       @scrollToEnd="scrollToEnd"
     >
       <div>
+        
         <v-banner v-if="banners.length > 0" :images="banners"></v-banner>
+        <v-gird></v-gird>
+        
         <div class="recommend-list">
-          <h1 class="list-title">热门歌单推荐</h1>
+          <div v-if="userinfo">
+            
+            <h1 class="list-title">为你推荐</h1>
+          <v-gird-img  :datalist="tuiList"></v-gird-img>
+          </div>
+          
+          <h1 class="list-title">酷选歌单</h1>
           <ul>
             <li
               @click="selectItem(item)"
@@ -38,12 +47,18 @@
 <script>
 
 import banner from '@/components/banner'
+import gird from '@/components/gird'
+import girdImg from '@/components/girdImg'
+
+
 import scroll from '@/components/scroll'
 import musicList from '@/components/musicList'
 import { playlistMixin } from '@/common/js/mixin'
 import api from '@/api'
 
-import { mapGetters } from 'vuex'
+import { mapGetters,mapMutations, mapActions } from 'vuex'
+
+ 
 
 export default {
   name: 'recommend',
@@ -52,25 +67,38 @@ export default {
     'v-banner': banner,
     'v-scroll': scroll,
     'v-music-list': musicList,
+    'v-gird': gird,
+    'v-gird-img': girdImg,
+
   },
   data() {
     return {
       pullup: true,
-      discList: []
+      tuiList:[],
+      discList: [],
+      userinfo:localStorage.getItem('userinfo')
     }
   },
   computed: {
     ...mapGetters([
       'banners',
-      'playList'
+      'playList',
+      'loginStatus'
     ]),
   },
   created() {
     this.limit = 10
+    
     if (this.banners.length === 0) {
       this.$store.dispatch('getBanners')
+
+       
     }
     this._getKuLists({ limit: this.limit })
+    this._getTuiList() 
+    this.$store.dispatch('changeStatus', false);
+    
+       
   },
   methods: {
     _getDiscList(params) {
@@ -84,8 +112,12 @@ export default {
       api.KuLists(params).then(res => {
         if (res.code === 200) {
           this.discList = res.playlist
+
         }
       })
+        // console.log(this.$store.getters.playHistory)
+        // console.log(localStorage.userinfo)
+
     },
     selectItem(item) {
       this.$router.push({
@@ -102,6 +134,24 @@ export default {
       this.$refs.recommend.style.bottom = bottom
       this.$refs.scroll.refresh()
     },
+    _getLikeList(){
+       api.LikeList().then(res => {
+        
+        if (res.code === 200) {
+        //     console.log(ret)
+        }
+      })
+    },
+    _getTuiList() {
+       this.$showLoading()
+       api.TuiList()
+        .then((res) => {  
+          if (res.code === 200) {
+            this.$hideLoading()
+            this.tuiList = res.recommend
+          }
+        })
+      }
   },
   watch: {
     pullUpLoadObj: {
@@ -110,6 +160,10 @@ export default {
       },
       deep: true
     },
+    loginStatus(){
+      this._getTuiList()
+      this.userinfo=localStorage.getItem('userinfo')
+    }
   }
 }
 </script>

@@ -13,13 +13,13 @@
       </div>
       <div class="list-wrapper" ref="listWrapper">
         <v-scroll
-          ref="favoriteList"
+          ref="likeList"
           class="list-scroll"
           v-if="currentIndex === 0"
-          :data="favoriteList"
+          :data="likeList"
         >
           <div class="list-inner">
-            <v-song-list :song-lists="favoriteList" @select="selectSong" :operate="false"></v-song-list>
+            <v-song-list :song-lists="likeList" @select="selectSong" :operate="false"></v-song-list>
           </div>
         </v-scroll>
         <v-scroll ref="playList" class="list-scroll" v-if="currentIndex===1" :data="playHistory">
@@ -41,6 +41,7 @@ import scroll from '@/components/scroll'
 import songList from '@/components/songList'
 import { mapGetters, mapActions } from 'vuex'
 import { playlistMixin } from '@/common/js/mixin'
+import api from '@/api'
 
 export default {
   name: 'user',
@@ -53,6 +54,9 @@ export default {
   data() {
     return {
       currentIndex: 0,
+      likeList:[],
+      likeId:'',
+      userList:[],
       switches: [
         {
           name: '我喜欢的'
@@ -66,7 +70,7 @@ export default {
   computed: {
     noResult() {
       if (this.currentIndex === 0) {
-        return !this.favoriteList.length
+        return !this.likeList.length
       } else {
         return !this.playHistory.length
       }
@@ -83,7 +87,54 @@ export default {
       'playHistory'
     ])
   },
+  created() {
+    
+    if(localStorage.userinfo){
+          
+          let params={
+            uid:JSON.parse(localStorage.userinfo).profile.userId
+          }
+          this._getUserList(params) 
+          
+           
+        }
+    },
+  watch:{
+    likeId(curVal, oldVal) { 
+        let data={
+            id:curVal
+          }
+          this._getLikeList(data)　
+
+
+      },
+  } ,  
   methods: {
+    _getLikeList(params){
+      if(localStorage.likeList){
+        this.likeList=JSON.parse(localStorage.likeList)
+      }else{
+        api.LikeList(params).then(res => {
+        if (res.code === 200) {
+          this.likeList = res.playlist.tracks
+          this.saveFavoriteList(this.likeList )
+          console.log(this.$store.getters)
+          localStorage.likeList=JSON.stringify(this.likeList)
+          }
+        })
+      }
+      
+    },
+    _getUserList(params){
+     api.UserList(params).then(res => {
+        if (res.code === 200) {
+          this.userList = res.playlist
+          this.likeId=this.userList[0].id
+           
+        }
+      })
+
+    },
     handlePlaylist(playlist) {
       const bottom = playlist.length > 0 ? '1.5rem' : ''
       this.$refs.listWrapper.style.bottom = bottom
@@ -104,7 +155,8 @@ export default {
     },
     ...mapActions([
       'selectPlaySong',
-      'playAllList'
+      'playAllList',
+      'saveFavoriteList',
     ])
   },
 }
